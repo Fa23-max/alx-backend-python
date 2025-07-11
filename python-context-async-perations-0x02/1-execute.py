@@ -19,7 +19,7 @@ class ExecuteQuery:
             print(f"An error occurred: {exc_value}")
         return False
     
-with DatabaseConnection('users.db', "SELECT * FROM users WHERE id = ?", 1) as conn:
+with ExecuteQuery('users.db', "SELECT * FROM users WHERE id = ?", 1) as conn:
     print("Connection established and query executed successfully.")
 
-    
+# ["__init__"] 

@@ -17,3 +17,5 @@ with DatabaseConnection('users.db') as conn:
     c = conn.cursor()
     c.execute("SELECT * FROM users")
     print(c.fetchall())
+
+# ["__init__", "__enter__", "__exit__"]

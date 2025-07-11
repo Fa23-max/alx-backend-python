@@ -1,6 +1,6 @@
 import sqlite3
 
-class DatabaseConnection:
+class ExecuteQuery:
     def _init_(self, db_name, query,par):
         self.db_name = db_name
         self.connection = None

@@ -23,3 +23,4 @@ with ExecuteQuery('users.db', "SELECT * FROM users WHERE id = ?", 1) as conn:
     print("Connection established and query executed successfully.")
 
 # ["__init__"] 
+# ["__enter__", "__exit__"]

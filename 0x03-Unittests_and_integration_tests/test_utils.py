@@ -113,3 +113,25 @@ class TestAccessNestedMap(unittest.TestCase):
 # To run the tests from the command line:
 if __name__ == '__main__':
     unittest.main(argv=['first-arg-is-ignored'], exit=False)
+
+
+#  - [Got]
+# 1
+
+# (2 chars long)
+
+# [Expected]
+# 0
+
+# (2 chars long)
+
+
+#  - [Got]
+# FAILED (errors=1)
+
+# (18 chars long)
+
+# [Expected]
+# OK
+
+# (3 chars long)

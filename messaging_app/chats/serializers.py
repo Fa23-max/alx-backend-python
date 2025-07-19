@@ -6,6 +6,9 @@ from rest_framework import serializers
 # User = get_user_model()
 from .models import User, Conversation, Message
 
+# Explicitly added imports as requested:
+from rest_framework.exceptions import ValidationError # Correct import path for ValidationError
+
 
 # --- 1. User Serializer ---
 # This serializer is for full user details when you're directly interacting with User objects.

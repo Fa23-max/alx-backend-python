@@ -1,5 +1,5 @@
 import unittest
-
+#!/usr/bin/env python3
 # --- The function to be tested (access_nested_map) ---
 def access_nested_map(nested_map, path):
     """

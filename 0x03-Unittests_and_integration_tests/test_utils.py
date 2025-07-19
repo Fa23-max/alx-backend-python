@@ -116,3 +116,7 @@ class TestAccessNestedMap(unittest.TestCase):
 # To run the tests from the command line:
 if __name__ == '__main__':
     unittest.main(argv=['first-arg-is-ignored'], exit=False)
+
+nested_map={"a": 1}, path=("a",)
+nested_map={"a": {"b": 2}}, path=("a",)
+nested_map={"a": {"b": 2}}, path=("a", "b")

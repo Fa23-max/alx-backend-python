@@ -141,3 +141,4 @@ class ConversationSerializer(serializers.ModelSerializer):
             instance.participants.set(participants_data) # Update participants if provided
         return instance
 
+# ["serializers.CharField", "serializers.SerializerMethodField()", "serializers.ValidationError"]

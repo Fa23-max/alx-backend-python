@@ -1,6 +1,32 @@
 import unittest
 #!/usr/bin/env python3
 # --- The function to be tested (access_nested_map) ---
+
+
+#  - [Got]
+# 1
+
+# (2 chars long)
+
+# [Expected]
+# 0
+
+# (2 chars long)
+
+
+#  - [Got]
+# FAILED (errors=1)
+
+# (18 chars long)
+
+# [Expected]
+# OK
+
+# (3 chars long)
+
+
+
+
 def access_nested_map(nested_map, path):
     """
     Accesses a value in a nested dictionary (map) given a list of keys (path).
@@ -115,23 +141,3 @@ if __name__ == '__main__':
     unittest.main(argv=['first-arg-is-ignored'], exit=False)
 
 
-#  - [Got]
-# 1
-
-# (2 chars long)
-
-# [Expected]
-# 0
-
-# (2 chars long)
-
-
-#  - [Got]
-# FAILED (errors=1)
-
-# (18 chars long)
-
-# [Expected]
-# OK
-
-# (3 chars long)

@@ -3,30 +3,6 @@ import unittest
 # --- The function to be tested (access_nested_map) ---
 
 
-#  - [Got]
-# 1
-
-# (2 chars long)
-
-# [Expected]
-# 0
-
-# (2 chars long)
-
-
-#  - [Got]
-# FAILED (errors=1)
-
-# (18 chars long)
-
-# [Expected]
-# OK
-
-# (3 chars long)
-
-
-
-
 def access_nested_map(nested_map, path):
     """
     Accesses a value in a nested dictionary (map) given a list of keys (path).
@@ -44,6 +20,8 @@ def access_nested_map(nested_map, path):
     current_level = nested_map
     for key in path:
         if not isinstance(current_level, dict) or key not in current_level:
+            # The error message should accurately reflect what was not found
+            # and where. The current message is fine for this context.
             raise KeyError(f"Key '{key}' not found in the nested map.")
         current_level = current_level[key]
     return current_level
@@ -103,23 +81,23 @@ class TestAccessNestedMap(unittest.TestCase):
         # Test Case 7: Key not found at the first level
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, ["d"])
-        self.assertEqual(str(cm.exception), "'Key 'd' not found in the nested map.'")
+        self.assertEqual(str(cm.exception), "Key 'd' not found in the nested map.") # Removed outer quotes
 
         # Test Case 8: Key not found at an intermediate level
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, ["a", "d"])
-        self.assertEqual(str(cm.exception), "'Key 'd' not found in the nested map.'")
+        self.assertEqual(str(cm.exception), "Key 'd' not found in the nested map.") # Removed outer quotes
 
         # Test Case 9: Key not found at the deepest level
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, ["a", "b", "d"])
-        self.assertEqual(str(cm.exception), "'Key 'd' not found in the nested map.'")
+        self.assertEqual(str(cm.exception), "Key 'd' not found in the nested map.") # Removed outer quotes
 
         # Test Case 10: Path goes beyond existing nested dicts
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, ["a", "b", "c", "d"])
         # The error message will reflect the last key that failed
-        self.assertEqual(str(cm.exception), "'Key 'd' not found in the nested map.'")
+        self.assertEqual(str(cm.exception), "Key 'd' not found in the nested map.") # Removed outer quotes
 
 
     def test_access_nested_map_type_error(self):
@@ -132,12 +110,9 @@ class TestAccessNestedMap(unittest.TestCase):
         # Test Case 11: Attempt to access a key on a non-dictionary value
         with self.assertRaises(KeyError) as cm: # KeyError is raised by my implementation's check
             access_nested_map(nested_map, ["a", "b", "c"])
-        self.assertEqual(str(cm.exception), "'Key 'c' not found in the nested map.'")
-        # Alternatively, depending on strictness, a TypeError might be expected if not checking isinstance(current_level, dict)
+        self.assertEqual(str(cm.exception), "Key 'c' not found in the nested map.") # Removed outer quotes
 
 
 # To run the tests from the command line:
 if __name__ == '__main__':
     unittest.main(argv=['first-arg-is-ignored'], exit=False)
-
-

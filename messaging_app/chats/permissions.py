@@ -59,3 +59,4 @@ class IsParticipantOfConversation(permissions.BasePermission):
 
         return False
 # ["conversation_id", "Message.objects.filter"]
+"conversation_id", "Message.objects.filter"

@@ -163,3 +163,4 @@ AUTH_USER_MODEL = 'chats.User'
 
 # ["PAGE_SIZE", "20", "DEFAULT_PAGINATION_CLASS", "PageNumberPagination"]
 
+# mee

@@ -1,6 +1,7 @@
 import datetime
 from django.conf import settings
-
+from django.utils import timezone
+from django.http import HttpResponseForbidden
 class RequestLoggingMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -10,6 +11,20 @@ class RequestLoggingMiddleware:
         log_entry = f"{datetime.datetime.now()} - User: {request.user} - Path: {request.path}\n"
         with open(settings.BASE_DIR / 'request_log.txt', 'a') as f:
             f.write(log_entry)
+        
+        response = self.get_response(request)
+        return response
+
+
+class RestrictAccessByTimeMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        now = timezone.now().time()
+        # Allow access between 6 PM (18:00) and 9 PM (21:00)
+        if not (datetime.time(18, 0) <= now < datetime.time(21, 0)):
+            return HttpResponseForbidden("Access denied outside allowed hours (6 PM - 9 PM).")
         
         response = self.get_response(request)
         return response

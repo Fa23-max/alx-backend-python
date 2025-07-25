@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'chats',
+    'django_filters',
 ]
 
 # REST Framework settings
@@ -155,3 +156,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'chats.User'   
+
+# ["PAGE_SIZE", "20", "DEFAULT_PAGINATION_CLASS", "PageNumberPagination"]

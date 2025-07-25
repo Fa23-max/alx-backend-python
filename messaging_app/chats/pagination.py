@@ -5,4 +5,4 @@
   "results": [
     // 20 messages here
   ]
-}
+}["PageNumberPagination"]

@@ -23,3 +23,34 @@ class IsOwnerOrAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
         # Deny permission for unauthenticated users
         return request.user and request.user.is_authenticated
+
+class IsParticipantOfConversation(permissions.BasePermission):
+    """
+    Custom permission to only allow participants of a conversation to interact with it
+    and its messages.
+    """
+    def has_permission(self, request, view):
+        # First check if user is authenticated
+        if not request.user or not request.user.is_authenticated:
+            return False
+            
+        # For conversation creation, allow authenticated users
+        if view.action == 'create':
+            return True
+            
+        return True  # Further checking done in has_object_permission
+
+    def has_object_permission(self, request, view, obj):
+        # Allow admin users full access
+        if request.user.is_staff:
+            return True
+
+        # If we're checking a Message object
+        if hasattr(obj, 'conversation'):
+            return request.user in obj.conversation.participants.all()
+
+        # If we're checking a Conversation object
+        if hasattr(obj, 'participants'):
+            return request.user in obj.participants.all()
+
+        return False

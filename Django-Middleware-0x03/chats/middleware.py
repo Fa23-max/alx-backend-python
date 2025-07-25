@@ -2,7 +2,9 @@ import datetime
 from django.conf import settings
 from django.utils import timezone
 from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden
 class RequestLoggingMiddleware:
+
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -65,3 +67,21 @@ class OffensiveLanguageMiddleware:
         if x_forwarded_for:
             return x_forwarded_for.split(',')[0].strip()
         return request.META.get('REMOTE_ADDR', '')
+    
+
+
+
+class RolepermissionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Check if user is authenticated and has admin/moderator role
+        if request.user.is_authenticated:
+            if not (request.user.is_admin or request.user.is_moderator):
+                return HttpResponseForbidden("Access denied. Admin or Moderator role required.")
+        else:
+            return HttpResponseForbidden("Access denied. Authentication required.")
+        
+        response = self.get_response(request)
+        return response

@@ -34,11 +34,15 @@ class IsParticipantOfConversation(permissions.BasePermission):
         if not request.user or not request.user.is_authenticated:
             return False
             
-        # For conversation creation, allow authenticated users
-        if view.action == 'create':
+        # Allow GET and POST requests for authenticated users
+        if request.method in ['GET', 'POST']:
             return True
             
-        return True  # Further checking done in has_object_permission
+        # For PUT, PATCH, DELETE methods, check if user is participant in has_object_permission
+        if request.method in ['PUT', 'PATCH', 'DELETE']:
+            return True  # Actual permission check done in has_object_permission
+            
+        return False  # Deny other methods
 
     def has_object_permission(self, request, view, obj):
         # Allow admin users full access

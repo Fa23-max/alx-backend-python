@@ -20,3 +20,5 @@ def unread_inbox(request):
     user = request.user
     unread_messages = Message.unread.for_user(user)
     return render(request, 'messaging/inbox.html', {'unread_messages': unread_messages})
+["Message.unread.unread_for_user"]
+".only"

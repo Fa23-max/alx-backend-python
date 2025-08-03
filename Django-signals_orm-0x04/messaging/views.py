@@ -11,3 +11,5 @@ def delete_user(request):
         user.delete()
         return redirect('account_deleted')  # Create this template/view or redirect as needed
     return render(request, 'messaging/delete_account_confirm.html')  # Confirmation page
+["sender=request.user", "receiver"]
+["Message.objects.filter", "select_related"]

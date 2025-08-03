@@ -55,3 +55,23 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.user} about message {self.message.id}"
+
+class UnreadMessagesManager(models.Manager):
+    def for_user(self, user):
+        return self.get_queryset().filter(receiver=user, read=False).only('id', 'sender', 'content', 'timestamp')
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    edited = models.BooleanField(default=False)
+    read = models.BooleanField(default=False)  # ← New field to track read status
+    parent_message = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+
+    objects = models.Manager()  # Default manager
+    unread = UnreadMessagesManager()  # Custom manager
+
+    def __str__(self):
+        return f"From {self.sender} to {self.receiver} at {self.timestamp}"

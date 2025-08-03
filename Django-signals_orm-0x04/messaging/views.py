@@ -22,3 +22,5 @@ def unread_inbox(request):
     return render(request, 'messaging/inbox.html', {'unread_messages': unread_messages})
 ["Message.unread.unread_for_user"]
 ".only"
+["cache_page"]
+["cache_page", "60"]

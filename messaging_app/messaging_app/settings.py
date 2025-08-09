@@ -106,10 +106,17 @@ WSGI_APPLICATION = 'messaging_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# Load environment variables
+import os
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('MYSQL_DB', 'mydatabase'),
+        'USER': os.environ.get('MYSQL_USER', 'myuser'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'mypassword'),
+        'HOST': 'db',
+        'PORT': '3306',
     }
 }
 

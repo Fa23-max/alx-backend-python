@@ -25,6 +25,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DB}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
+      # Persist MySQL data across container restarts
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"

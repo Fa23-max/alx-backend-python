@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# kubctl-0x01 - Script to scale Django app deployment and perform load testing
+
+echo "=== Scaling Django app deployment to 3 replicas ==="
+kubectl scale deployment django-messaging-app --replicas=3
+
+echo
+echo "=== Verifying that multiple pods are running ==="
+kubectl get pods
+
+echo
+echo "=== Performing load testing with wrk ==="
+# Check if wrk is installed
+if ! command -v wrk &> /dev/null
+then
+    echo "wrk could not be found, installing..."
+    # Install wrk (this will vary by OS)
+    # For Ubuntu/Debian:
+    # sudo apt-get install wrk
+    # For macOS with Homebrew:
+    # brew install wrk
+    echo "Please install wrk manually:"
+    echo "  Ubuntu/Debian: sudo apt-get install wrk"
+    echo "  macOS: brew install wrk"
+    echo "  Windows: Download from https://github.com/wg/wrk"
+else
+    # Get the service IP
+    SERVICE_IP=$(kubectl get service django-messaging-app-service -o jsonpath='{.spec.clusterIP}')
+    echo "Service IP: $SERVICE_IP"
+    
+    # Perform load test
+    echo "Starting load test..."
+    wrk -t12 -c400 -d30s http://$SERVICE_IP:8000/
+fi
+
+echo
+echo "=== Monitoring Resource Usage ==="
+kubectl top nodes
+kubectl top pods

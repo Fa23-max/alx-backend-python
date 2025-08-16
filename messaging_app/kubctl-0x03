@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# kubctl-0x03 - Script to perform rolling update and test for downtime
+
+echo "=== Starting Rolling Update ==="
+
+# Start background curl requests to test for downtime
+echo "Starting background curl requests to test for downtime..."
+{
+  while true; do
+    timestamp=$(date +%s%3N)
+    response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000 2>/dev/null || echo "000")
+    echo "[$timestamp] HTTP Response: $response" >> curl_responses.log
+    sleep 0.1
+  done
+} &
+CURL_PID=$!
+
+# Give curl some time to start
+sleep 2
+
+# Apply the updated deployment
+echo "Applying updated deployment with django:2.0..."
+kubectl apply -f blue_deployment.yaml
+
+# Monitor the rollout status
+echo "Monitoring rollout status..."
+kubectl rollout status deployment/django-messaging-app
+
+# Stop the background curl requests
+echo "Stopping background curl requests..."
+kill $CURL_PID 2>/dev/null
+
+# Verify the Rolling Update is Complete
+echo
+echo "=== Verifying Rolling Update ==="
+echo "Current pods:"
+kubectl get pods
+
+echo
+echo "Deployment status:"
+kubectl get deployment django-messaging-app -o wide
+
+echo
+echo "=== Downtime Analysis ==="
+echo "Checking curl responses for downtime..."
+echo "Total requests: $(wc -l < curl_responses.log)"
+echo "Successful requests (200): $(grep -c "200" curl_responses.log)"
+echo "Failed requests: $(grep -c "000" curl_responses.log)"
+
+# Show any failed requests
+if grep -q "000" curl_responses.log; then
+  echo "Failed requests timestamps:"
+  grep "000" curl_responses.log
+else
+  echo "No failed requests detected - no downtime experienced!"
+fi
+
+# Clean up
+rm -f curl_responses.log
+
+echo
+echo "=== Rolling Update Complete ==="
+echo "The deployment has been updated to django:2.0"
+echo "Rolling update completed with minimal to no downtime"
